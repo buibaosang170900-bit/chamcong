@@ -6,19 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body style="text-align:center;font-family:sans-serif;padding-top:50px">
+<body style="text-align:center;font-family:sans-serif;padding-top:60px">
 
-<h2>📲 Đang chuyển hướng...</h2>
+<h2>📲 Chấm công</h2>
+<p>Nhấn nút bên dưới để xác nhận</p>
+
+<button onclick="go()" style="padding:15px 30px;font-size:18px">
+  ✅ Xác nhận chấm công
+</button>
 
 <script>
   const id = new URLSearchParams(window.location.search).get("id");
 
-  if (!id) {
-    document.body.innerHTML = "<h3>❌ Thiếu ID</h3>";
-  } else {
-    const api = "https://script.google.com/macros/s/AKfycbxtMw8sV6CpQIHc4kNf3PSADNXGAeHCZxj1JtRI-dSAPDc3iv4r_jD-8FK1Ax-gCPti/exec?id=" + id;
+  function go() {
+    if (!id) {
+      alert("Thiếu ID!");
+      return;
+    }
 
-    // 👉 CHUYỂN HƯỚNG (KHÔNG BỊ CHẶN)
+    const api = "https://script.google.com/macros/s/AKfycbxtMw8sV6CpQIHc4kNf3PSADNXGAeHCZxj1JtRI-dSAPDc3iv4r_jD-8FK1Ax-gCPti/exec?id" + id;
+
+    // 👉 Có click → Safari cho phép
     window.location.href = api;
   }
 </script>
