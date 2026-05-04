@@ -2,47 +2,22 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Chấm công QR</title>
+  <title>Chấm công</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body style="text-align:center;font-family:sans-serif;background:#f5f5f5;padding-top:50px">
+<body style="margin:0">
 
-<h2>📲 Chấm công</h2>
-<div id="result">Đang xử lý...</div>
+<iframe id="frame" style="width:100%;height:100vh;border:none;"></iframe>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  const id = new URLSearchParams(window.location.search).get("id");
 
   if (!id) {
-    document.getElementById("result").innerText = "❌ Thiếu ID!";
+    document.body.innerHTML = "<h3>❌ Thiếu ID</h3>";
   } else {
-
-    const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=" + id;
-
-    fetch(api)
-      .then(res => res.json())
-      .then(data => {
-
-        if (data.status === "success") {
-
-          let color = (data.type === "IN") ? "green" : "red";
-
-          document.getElementById("result").innerHTML = `
-            <h2 style="color:${color}">✅ ${data.name}</h2>
-            <p>${data.type === "IN" ? "🟢 Vào làm" : "🔴 Tan ca"}</p>
-          `;
-
-        } else {
-          document.getElementById("result").innerText = "❌ " + data.msg;
-        }
-
-      })
-      .catch(err => {
-        document.getElementById("result").innerText = "❌ Lỗi kết nối!";
-      });
-
+    const api = "https://script.google.com/macros/s/AKfycbxtMw8sV6CpQIHc4kNf3PSADNXGAeHCZxj1JtRI-dSAPDc3iv4r_jD-8FK1Ax-gCPti/exec?id=" + id;
+    document.getElementById("frame").src = api;
   }
 </script>
 
