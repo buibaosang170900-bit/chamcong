@@ -8,28 +8,40 @@
 
 <body style="text-align:center;font-family:sans-serif;background:#f5f5f5;padding-top:50px">
 
-<h2>📲 Hệ thống chấm công</h2>
-<p id="status">Đang xử lý...</p>
-
-<!-- iframe gọi API (ẩn) -->
-<iframe id="hiddenFrame" style="display:none;"></iframe>
+<h2>📲 Chấm công</h2>
+<div id="result">Đang xử lý...</div>
 
 <script>
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
   if (!id) {
-    document.getElementById("status").innerText = "❌ Thiếu ID nhân viên!";
+    document.getElementById("result").innerText = "❌ Thiếu ID!";
   } else {
 
-    // 🔴 THAY LINK NÀY BẰNG LINK APPS SCRIPT CỦA BẠN
-    const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=NV001" + id;
+    const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=" + id;
 
-    // 👉 Gọi API bằng iframe (tránh CORS + Safari lỗi)
-    document.getElementById("hiddenFrame").src = api;
+    fetch(api)
+      .then(res => res.json())
+      .then(data => {
 
-    // Hiển thị trạng thái
-    document.getElementById("status").innerText = "✅ Đã ghi nhận chấm công";
+        if (data.status === "success") {
+
+          let color = (data.type === "IN") ? "green" : "red";
+
+          document.getElementById("result").innerHTML = `
+            <h2 style="color:${color}">✅ ${data.name}</h2>
+            <p>${data.type === "IN" ? "🟢 Vào làm" : "🔴 Tan ca"}</p>
+          `;
+
+        } else {
+          document.getElementById("result").innerText = "❌ " + data.msg;
+        }
+
+      })
+      .catch(err => {
+        document.getElementById("result").innerText = "❌ Lỗi kết nối!";
+      });
 
   }
 </script>
