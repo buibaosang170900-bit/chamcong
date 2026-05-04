@@ -2,32 +2,35 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Chấm công</title>
+  <title>Chấm công QR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body style="text-align:center;font-family:sans-serif;background:#f5f5f5">
+<body style="text-align:center;font-family:sans-serif;background:#f5f5f5;padding-top:50px">
 
-<h2>📲 Đang chấm công...</h2>
-<p id="status">Vui lòng chờ...</p>
+<h2>📲 Hệ thống chấm công</h2>
+<p id="status">Đang xử lý...</p>
+
+<!-- iframe gọi API (ẩn) -->
+<iframe id="hiddenFrame" style="display:none;"></iframe>
 
 <script>
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
   if (!id) {
-    document.getElementById("status").innerText = "❌ Thiếu ID!";
+    document.getElementById("status").innerText = "❌ Thiếu ID nhân viên!";
   } else {
 
-    const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=NV001" + id;
+    // 🔴 THAY LINK NÀY BẰNG LINK APPS SCRIPT CỦA BẠN
+    const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=" + id;
 
-fetch(api, { mode: "no-cors" })
-  .then(() => {
-    document.getElementById("status").innerText = "✅ Đã chấm công";
-  })
-  .catch(() => {
-    document.getElementById("status").innerText = "❌ Lỗi kết nối!";
-  });
+    // 👉 Gọi API bằng iframe (tránh CORS + Safari lỗi)
+    document.getElementById("hiddenFrame").src = api;
+
+    // Hiển thị trạng thái
+    document.getElementById("status").innerText = "✅ Đã ghi nhận chấm công";
+
   }
 </script>
 
