@@ -21,14 +21,13 @@
 
     const api = "https://script.google.com/macros/s/AKfycbwsjdqyJ6_lECYTuItWAaGg2X2pVeM5N0js3BG4swJ3uNvxubxk8huXiqWozIReLTB7/exec?id=NV001" + id;
 
-    fetch(api)
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("status").innerText = data;
-      })
-      .catch(err => {
-        document.getElementById("status").innerText = "❌ Lỗi kết nối!";
-      });
+fetch(api, { mode: "no-cors" })
+  .then(() => {
+    document.getElementById("status").innerText = "✅ Đã chấm công";
+  })
+  .catch(() => {
+    document.getElementById("status").innerText = "❌ Lỗi kết nối!";
+  });
   }
 </script>
 
